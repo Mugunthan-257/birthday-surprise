@@ -801,6 +801,26 @@ body{
     transform:translateY(-3px);
 }
 
+.song-controls{
+    display:flex;
+    gap:10px;
+    justify-content:center;
+    flex-wrap:wrap;
+}
+
+.pause-btn{
+    background:#fff;
+    color:#ff5c8a;
+    border:2px solid #ff5c8a;
+    box-shadow:0 8px 16px rgba(255,92,138,0.15);
+}
+
+.pause-btn:hover{
+    background:#ffe8f0;
+    color:#e0507a;
+    transform:translateY(-3px);
+}
+
 .cake-caption{
     margin-top:12px;
     color:#555;
@@ -1312,9 +1332,9 @@ body{
     </div>
 </div>
 
-<div class="overlay" id="cakeOverlay" onclick="if(event.target===this) this.classList.remove('show')">
+<div class="overlay" id="cakeOverlay" onclick="if(event.target===this){ this.classList.remove('show'); stopSong(); }">
     <div class="cake-card">
-        <button class="close-btn" onclick="document.getElementById('cakeOverlay').classList.remove('show')">&times;</button>
+        <button class="close-btn" onclick="document.getElementById('cakeOverlay').classList.remove('show'); stopSong();">&times;</button>
 
         <div class="cake-scene">
             <div class="vinyl-wrap">
@@ -1353,9 +1373,12 @@ body{
             <div class="note" id="note3">&#9835;</div>
         </div>
 
-        <audio id="birthdaySong" src="song.mp4" preload="none"></audio></audio></audio>
+        <audio id="birthdaySong" src="song.mp4" preload="none"></audio>
 
-        <button class="play-btn" id="playBtn" onclick="playSong()">&#9658; Play our song</button>
+        <div class="song-controls">
+            <button class="play-btn" id="playBtn" onclick="playSong()">&#9658; Play our song</button>
+            <button class="play-btn pause-btn" id="pauseBtn" onclick="pauseSong()">&#10074;&#10074; Pause</button>
+        </div>
         <p class="cake-caption">press play and let it spin 🎶</p>
     </div>
 </div>
@@ -1483,13 +1506,7 @@ function blowEntryCandle(){
 
 function openCake(){
     document.getElementById('cakeOverlay').classList.add('show');
-    const vinyl = document.getElementById('vinylSvg');
-    vinyl.classList.remove('playing');
-    const btn = document.getElementById('playBtn');
-    btn.innerHTML = '&#9658; Play our song';
-    const audio = document.getElementById('birthdaySong');
-    audio.pause();
-    audio.currentTime = 0;
+    stopSong();
 }
 
 function playSong(){
@@ -1535,6 +1552,25 @@ function playSong(){
         btn.innerHTML = '&#9658; Play our song';
         vinyl.classList.remove('playing');
     };
+}
+
+function pauseSong(){
+    const vinyl = document.getElementById('vinylSvg');
+    const btn = document.getElementById('playBtn');
+    const audio = document.getElementById('birthdaySong');
+    audio.pause();
+    vinyl.classList.remove('playing');
+    btn.innerHTML = '&#9658; Play our song';
+}
+
+function stopSong(){
+    const vinyl = document.getElementById('vinylSvg');
+    const btn = document.getElementById('playBtn');
+    const audio = document.getElementById('birthdaySong');
+    audio.pause();
+    audio.currentTime = 0;
+    vinyl.classList.remove('playing');
+    btn.innerHTML = '&#9658; Play our song';
 }
 
 // ---- catch the hearts game ----
